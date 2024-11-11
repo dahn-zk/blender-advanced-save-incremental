@@ -13,22 +13,19 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-# https://developer.blender.org/docs/features/extensions/schema/1.0.0/
-schema_version = "1.0.0"
+import tomllib
+from collections.abc import Iterable
+from os import PathLike
 
-id = "advanced_save_incremental"
-version = "1.1.0"
-name = "Advanced Save Incremental"
-tagline = "Save Incremental, but with persistent configurable templates"
-maintainer = "Danylo Dubinin"
-type = "add-on"
-website = "https://github.com/dahn-zk/blender-advanced-save-incremental"
-tags = ["Pipeline"]
-blender_version_min = "4.2.0"
-license = ["SPDX:GPL-3.0-or-later"]
-[permissions]
-files = "Save/Open blend-files and find other versioned blend-files"
-[build]
-paths_exclude_pattern = [
-    "__pycache__/",
-]
+from .Template import Template
+
+def templates_import(file_path: str | bytes | PathLike) -> list[Template]:
+    with open(file_path, "rb") as file:
+        templates_dict = tomllib.load(file)["templates"]
+    templates = list(map(Template.from_dict, templates_dict))
+    return templates
+
+def templates_export(file_path: str | bytes | PathLike, templates: Iterable[Template]):
+    with open(file_path, "w") as file:
+        for template in templates:
+            file.write(f"[[templates]]\n{template.to_toml()}\n\n")

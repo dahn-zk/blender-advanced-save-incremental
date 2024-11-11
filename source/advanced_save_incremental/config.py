@@ -14,10 +14,11 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 """ some values that should not or could not be in the add-on preferences """
-# todo: extract this into gitignored env file or something
 
-log = False
+import os
+
+log = os.environ.get("log", False)
 """ to enable debug logging. """
 
-dev = False
+dev = os.environ.get("dev", False)
 """ to enable development features. """

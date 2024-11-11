@@ -15,10 +15,33 @@
 
 from dataclasses import dataclass
 
-from . import VersionTemplate
+from .VersionTemplate import VersionTemplate
 
 @dataclass
 class Template:
-    prefix: str
-    suffix: str
-    version: VersionTemplate
+    name: str = "Unnamed Template"
+    prefix: str | None = None
+    suffix: str | None = None
+    version: VersionTemplate | None = None
+    @staticmethod
+    def from_dict(d: dict | None):
+        template = Template()
+        if d is not None:
+            template.name = d.get("name", template.name)
+            template.prefix = d.get("prefix", template.prefix)
+            template.suffix = d.get("suffix", template.suffix)
+            dv = d.get("version")
+            if dv is not None:
+                template.version = VersionTemplate.from_dict(dv)
+            else:
+                template.version = None
+        return template
+    def to_toml(template) -> str:
+        lines = [f'name = "{template.name}"']
+        if template.prefix is not None: lines.append(f'prefix = "{template.prefix}"')
+        if template.suffix is not None: lines.append(f'suffix = "{template.suffix}"')
+        if template.version is not None:
+            lines.append(f'version.separator = "{template.version.separator}"')
+            lines.append(f'version.count = {template.version.count}')
+            lines.append(f'version.width = {template.version.width}')
+        return '\n'.join(lines)

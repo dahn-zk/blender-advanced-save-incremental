@@ -90,6 +90,9 @@ see also: https://blender.stackexchange.com/questions/8290/how-to-register-globa
 
 ## technical details
 
+there are some code design issue left because of how the add-on quickly changed the requirements during the development.
+see [todo](./todo.md).
+
 ### bpy.props
 
 the API requires defining Custom Properties as annotations, which breaks the code style, which relies on Python typings.
@@ -99,20 +102,6 @@ level (module, class, doesn't matter) not related to `str.split` in any way. whe
 will be detected as `None` because Blender does not provide normal Python module to rely on and `fake-bpy-module` does
 not extract the correct annotations for each of the `bpy.props.*`. so until Blender finally makes the normal module to
 use, we define getters like `p_get(self) -> ...` with the correct typing where needed.
-
-### code legacy
-
-there are some code design issue left because of how the add-on quickly changed the requirements during the development.
-the list by top-priority:
-
-- operator data is built on every `draw` call, which was fine for the first version, but with the dynamic collection
-  of Save Templates, the code become messy. now `core` logic is mixed with Blender interface logic and it should be
-  separated.
-- `config` in `VersionTemplate` class is temporary, the values should be simply part of class validation.
-- `bpyx` can be re-organized better
-- it would likely be nicer to have `draw_*` methods inside a property groups, but currently there is no need for it
-- `data_*` accessors and modifiers could have fewer parameters, as all the extra data is in `Preferences`. legacy code
-- when defining `Callable` typings, `ParamSpec` can be useful instead, but for now we use a simple way
 
 [Editor]: https://docs.blender.org/manual/en/4.2/editors/index.html
 

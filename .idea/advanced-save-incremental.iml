@@ -7,7 +7,7 @@
       <excludeFolder url="file://$MODULE_DIR$/playground" />
       <excludeFolder url="file://$MODULE_DIR$/misc" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.11 (dev)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.11 (python-3.11-venv)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="TestRunnerService">

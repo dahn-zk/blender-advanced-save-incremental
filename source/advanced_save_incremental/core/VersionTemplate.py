@@ -35,3 +35,11 @@ class VersionTemplate:
         """
     def parts_names_get(self):
         return VersionTemplate.config.parts[:self.count]
+    @staticmethod
+    def from_dict(d: dict | None):
+        version_template = VersionTemplate()
+        if d is not None:
+            version_template.separator = d.get("separator", version_template.separator)
+            version_template.count = d.get("count", version_template.count)
+            version_template.width = d.get("width", version_template.width)
+        return version_template

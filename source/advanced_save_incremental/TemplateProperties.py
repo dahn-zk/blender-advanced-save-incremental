@@ -16,6 +16,7 @@
 import bpy
 
 from . import bpyx
+from . import core
 from .VersionTemplatePropertyGroup import VersionTemplatePropertyGroup
 
 @bpyx.addon_setup.registree
@@ -97,3 +98,52 @@ class TemplateProperties(bpy.types.PropertyGroup):
         description = "Save and overwrite an existing file without warning",
     )
     save_overwrite: save_overwrite_def
+    #
+    def core_get(self) -> core.Template:
+        return core.Template(
+            name = self.name,
+            prefix = self.prefix if self.prefix_use else None,
+            suffix = self.suffix if self.suffix_use else None,
+            version = self.version_get().core_get() if self.version_use else None,
+        )
+    #
+    def to_toml(self) -> str:
+        lines = [f'name = "{self.name}"'] if self.name else []
+        lines.append(f'{self.dirpath_key} = "{self.dirpath}"')
+        if self.prefix_use:
+            lines.append(f'{self.prefix_key} = "{self.prefix}"')
+        if self.suffix_use:
+            lines.append(f'{self.suffix_key} = "{self.suffix}"')
+        if self.version_use:
+            lines.append(self.version_get().to_toml())
+        def bool_str(b: bool):
+            return "true" if b else "false"
+        lines += [
+            f'{self.save_copy_key} = {bool_str(self.save_copy)}',
+            f'{self.save_overwrite_key} = {bool_str(self.save_overwrite)}',
+        ]
+        return '\n'.join(lines)
+    #
+    def from_dict(self, d: dict):
+        if d is not None:
+            self.name = d.get("name", self.name)
+            if (v := d.get(self.prefix_key)) is not None:
+                self.prefix = v
+                self.prefix_use = True
+            else:
+                self.prefix_use = False
+            if (v := d.get(self.suffix_key)) is not None:
+                self.suffix = v
+                self.suffix_use = True
+            else:
+                self.suffix_use = False
+            if (v := d.get(self.version_key)) is not None:
+                self.version_get().from_dict(v)
+                self.version_use = True
+            else:
+                self.version_use = False
+            if (v := d.get(self.save_copy_key)) is not None:
+                self.save_copy = v
+            if (v := d.get(self.save_overwrite_key)) is not None:
+                self.save_overwrite = v
+        return self

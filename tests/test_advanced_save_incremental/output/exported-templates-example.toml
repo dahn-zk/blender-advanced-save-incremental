@@ -1,0 +1,15 @@
+[[templates]]
+name = "1st Template"
+prefix = "foo_"
+suffix = "_v"
+version.separator = "_"
+version.count = 2
+version.width = 2
+
+[[templates]]
+name = "Unnamed Template"
+suffix = "-"
+
+[[templates]]
+name = "Unnamed Template"
+

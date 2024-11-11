@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import string
+from string import digits
 
 import bpy
 
@@ -25,7 +25,7 @@ class VersionTemplatePropertyGroup(bpy.types.PropertyGroup):
     #
     separator_key = "separator"
     def separator_set(self, value: str):
-        if value and all(d not in value for d in string.digits):
+        if value and all(d not in value for d in digits):
             self[VersionTemplatePropertyGroup.separator_key] = value
     def separator_get(self) -> str:
         return self.get(VersionTemplatePropertyGroup.separator_key, ".")
@@ -62,3 +62,19 @@ class VersionTemplatePropertyGroup(bpy.types.PropertyGroup):
             count = self.count,
             width = self.width,
         )
+    #
+    def to_toml(self) -> str:
+        lines = [f'name = "{self.name}"'] if self.name else []
+        lines += [
+            f'version.{self.separator_key} = "{self.separator}"',
+            f'version.{self.count_key} = {self.count}',
+            f'version.{self.width_key} = {self.width}',
+        ]
+        return '\n'.join(lines)
+    #
+    def from_dict(self, d: dict):
+        if d is not None:
+            self.separator = d.get(self.separator_key, self.separator)
+            self.count = d.get(self.count_key, self.count)
+            self.width = d.get(self.width_key, self.width)
+        return self

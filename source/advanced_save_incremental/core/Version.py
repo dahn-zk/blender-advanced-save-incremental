@@ -16,7 +16,7 @@
 from dataclasses import dataclass
 from dataclasses import field
 
-from . import VersionTemplate
+from .VersionTemplate import VersionTemplate
 
 @dataclass
 class Version:

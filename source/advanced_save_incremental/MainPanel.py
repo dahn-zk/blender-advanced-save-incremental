@@ -31,6 +31,8 @@ from .StoredTemplateProperties import StoredTemplateProperties
 from .TemplateMoveOperator import TemplateMoveOperator
 from .TemplateProperties import TemplateProperties
 from .TemplatesAddOperator import TemplatesAddOperator
+from .TemplatesPersistenceOperator import TemplatesExportOperator
+from .TemplatesPersistenceOperator import TemplatesImportOperator
 from .TemplatesRemoveAllOperator import TemplatesRemoveAllOperator
 from .TemplatesRemoveOperator import TemplatesRemoveOperator
 from .VersionParseOperator import VersionParseOperator
@@ -220,17 +222,17 @@ class MainPanel(bpy.types.Panel, stdx.SafeCaller):
     bl_category = bl_label
     bl_order = 3
     #
-    def _draw_header(self, layout):
+    def _draw_header(self, layout: bpy.types.UILayout):
         layout.label(
             text = f"Add-on: {Globals.addon_name} v{Globals.addon_version}")
         layout.operator("preferences.addon_show",
             icon = 'PREFERENCES', text = "").module = __package__
-    def _draw_data_create(self, layout):
+    def _draw_data_create(self, layout: bpy.types.UILayout):
         row = layout.row()
         row.label(icon = 'INFO',
             text = "No data have been set yet for the current file.")
         DataUpdateOperator.draw_layout(layout, text = "Create")
-    def _draw_file_data(self, data: DataPropertyGroup, layout):
+    def _draw_file_data(self, layout: bpy.types.UILayout, data: DataPropertyGroup):
         layout.use_property_split = True
         header = layout.row()
         header.label(text = f"Current File: {file_path_get().stem}")
@@ -252,6 +254,11 @@ class MainPanel(bpy.types.Panel, stdx.SafeCaller):
         #
         layout.prop(data, DataPropertyGroup.root_key, emboss = False)
         layout.prop(data, data.version_value_key, emboss = False)
+    def _draw_advanced_section(self, layout: bpy.types.UILayout, data: DataPropertyGroup):
+        layout.separator(type = 'LINE')
+        layout.prop(data, DataPropertyGroup.ui_list_buttons_key)
+        layout.operator(TemplatesImportOperator.bl_idname)
+        layout.operator(TemplatesExportOperator.bl_idname)
     def _safe_call(self, context: bpy.types.Context):
         layout = self.layout
         preferences = Preferences.instance_get()
@@ -264,7 +271,7 @@ class MainPanel(bpy.types.Panel, stdx.SafeCaller):
             self._draw_data_create(layout.box())
             return
         # current file info
-        self._draw_file_data(data, layout.box())
+        self._draw_file_data(layout.box(), data)
         # templates
         templates_box = layout.box()
         draw_templates(layout = templates_box,
@@ -276,6 +283,6 @@ class MainPanel(bpy.types.Panel, stdx.SafeCaller):
         if data.ui_list_buttons:
             draw_templates_operators(templates_box.row())
         #
-        layout.prop(data, DataPropertyGroup.ui_list_buttons_key)
+        self._draw_advanced_section(layout, data)
     def draw(self, context: bpy.types.Context):
         self.safe_call(context)
