@@ -13,20 +13,24 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from dataclasses import dataclass
+from .importlibx import logger
 
-from ..exts.stdx import DataclassFromDictMixIn
-
-@dataclass
-class VersionTemplate(DataclassFromDictMixIn):
-    separator: str = "."
-    count: int = 3
-    width: int = 1
+class SafeCallMixIn():
+    """
+    min-in with `_safe_call` method to suppress repeated exeptions
+    """
     #
-    class config:
-        parts = ["Major", "Minor", "Patch"]
-        width_max = 3
+    should_raise_exception_once = True
     #
-    @staticmethod
-    def part_get(idx: int):
-        return VersionTemplate.config.parts[idx]
+    _had_exception = False
+    def _safe_call(self, *args, **kwargs):
+        raise NotImplementedError("_safe_call not implemented")
+    def safe_call(self, *args, **kwargs):
+        try:
+            self._safe_call(*args, **kwargs)
+        except Exception as exc:
+            if not self.__class__._had_exception:
+                self.__class__._had_exception = True
+                logger.critical(exc, exc_info = exc)
+                if self.should_raise_exception_once:
+                    raise exc

@@ -1,4 +1,4 @@
-from advanced_save_incremental.core import parse
+from advanced_save_incremental.core import parse_stem
 from advanced_save_incremental.core import StemParts
 from advanced_save_incremental.core import Template
 from advanced_save_incremental.core import Version
@@ -25,4 +25,4 @@ def test_parse():
             template = version_template,
         )
     )
-    assert parse(stem, template) == expected_stem_parts
+    assert parse_stem(stem, template) == expected_stem_parts

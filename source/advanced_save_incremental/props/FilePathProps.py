@@ -13,21 +13,24 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-""" core structures and functions not depending on the Blender API """
+from pathlib import Path
 
-import re
+import bpy
 
-from .build import build_version_str
-from .build import file_name_get
-from .build import version_increment
-from .FileSaveData import FileSaveData
-from .parse import parse_stem
-from .StemParts import StemParts
-from .VersionParts import VersionParts
-from .Template import Template
-from .Version import Version
-from .VersionTemplate import VersionTemplate
+from .. import bpyx
 
-def tokenize_words_and_numbers(stem: str) -> tuple[str, ...]:
-    return tuple(int(e) if e.isdigit() else e
-        for e in re.split(r"(\d+)", stem))
+@bpyx.addon_setup.registree
+class FilePathProps(bpy.types.PropertyGroup):
+    """ property group for UI List Item in the files openers """
+    #
+    path_key = "path"
+    path: bpy.props.StringProperty(name = "Path", subtype = "FILE_PATH")
+    def path_get(self) -> str: return self.path
+    #
+    stem_key = "stem"
+    stem: bpy.props.StringProperty(name = "Stem")
+    def stem_get(self) -> str: return self.stem
+    #
+    def set(self, path: Path):
+        self.path = str(path)
+        self.stem = path.stem

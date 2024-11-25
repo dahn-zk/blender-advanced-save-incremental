@@ -14,29 +14,22 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import logging
+import textwrap
+from pathlib import Path
 
-from .prefs import config
+from .BaseOperator import BaseOperator
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
 
-if config.dev:
-    logger.debug("development mode is enabled")
-    # do nothing for the first time the add-on is loaded.
-    # after that recursively re-import the whole module excluding external libs.
-    def _dev_reload():
+class BasePathOperator(BaseOperator):
+    path: Path
+    def path_create_directory(self):
         try:
-            stdx.importlibx.reload(__package__)
-        except NameError:
-            pass
-        except Exception as exc:
-            logger.critical(exc, exc_info = exc)
-    _dev_reload()
-
-from .exts import stdx
-from .exts import bpyx
-from .ui import MainPanel
-
-register, unregister = bpyx.addon_setup.registry_get()
-
-if config.log: logger.debug(f"loaded: {__package__}")
+            self.path.mkdir(parents = True, exist_ok = True)
+        except OSError as exc:
+            self.report_invalid_input(textwrap.dedent(f"""\
+                    Could not create the directory due to an OS error: {exc}
+                    Directory: {self.path}
+                    Make sure the path is valid, you have the access, disk space, etc.
+                    """))
+            logger.error(f"could not create directory at {self.path}\n", exc_info = exc)

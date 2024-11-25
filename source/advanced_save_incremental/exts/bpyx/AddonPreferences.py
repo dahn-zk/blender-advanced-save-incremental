@@ -13,21 +13,17 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-""" core structures and functions not depending on the Blender API """
+from typing import Self
 
-import re
+import bpy
 
-from .build import build_version_str
-from .build import file_name_get
-from .build import version_increment
-from .FileSaveData import FileSaveData
-from .parse import parse_stem
-from .StemParts import StemParts
-from .VersionParts import VersionParts
-from .Template import Template
-from .Version import Version
-from .VersionTemplate import VersionTemplate
-
-def tokenize_words_and_numbers(stem: str) -> tuple[str, ...]:
-    return tuple(int(e) if e.isdigit() else e
-        for e in re.split(r"(\d+)", stem))
+class AddonPreferences(bpy.types.AddonPreferences):
+    """
+    base class for addon preferences
+    """
+    # https://docs.blender.org/api/4.2/bpy.types.AddonPreferences.html
+    # https://docs.blender.org/manual/en/4.2/advanced/extensions/addons.html#user-preferences-and-package
+    # bl_idname = __package__
+    @classmethod
+    def instance_get(cls) -> Self:
+        return bpy.context.preferences.addons[cls.bl_idname].preferences

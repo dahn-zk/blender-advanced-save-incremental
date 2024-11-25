@@ -16,26 +16,14 @@
 from dataclasses import dataclass
 
 from .VersionTemplate import VersionTemplate
+from ..exts.stdx.dataclassesx import DataclassFromDictMixIn
 
 @dataclass
-class Template:
+class Template(DataclassFromDictMixIn):
     name: str = "Unnamed Template"
     prefix: str | None = None
     suffix: str | None = None
     version: VersionTemplate | None = None
-    @staticmethod
-    def from_dict(d: dict | None):
-        template = Template()
-        if d is not None:
-            template.name = d.get("name", template.name)
-            template.prefix = d.get("prefix", template.prefix)
-            template.suffix = d.get("suffix", template.suffix)
-            dv = d.get("version")
-            if dv is not None:
-                template.version = VersionTemplate.from_dict(dv)
-            else:
-                template.version = None
-        return template
     def to_toml(template) -> str:
         lines = [f'name = "{template.name}"']
         if template.prefix is not None: lines.append(f'prefix = "{template.prefix}"')

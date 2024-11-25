@@ -13,21 +13,19 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-""" core structures and functions not depending on the Blender API """
+from .. import bpyx
+from ..props.Props import props_templates_get_or_crt
+from .TemplatesBaseOperator import TemplatesBaseOperator
 
-import re
-
-from .build import build_version_str
-from .build import file_name_get
-from .build import version_increment
-from .FileSaveData import FileSaveData
-from .parse import parse_stem
-from .StemParts import StemParts
-from .VersionParts import VersionParts
-from .Template import Template
-from .Version import Version
-from .VersionTemplate import VersionTemplate
-
-def tokenize_words_and_numbers(stem: str) -> tuple[str, ...]:
-    return tuple(int(e) if e.isdigit() else e
-        for e in re.split(r"(\d+)", stem))
+@bpyx.addon_setup.registree
+class TemplatesAddOperator(TemplatesBaseOperator):
+    bl_idname = f"{TemplatesBaseOperator.idname}_add"
+    bl_label = "Add"
+    ui_icon = 'ADD'
+    def execute(self, context):
+        templates = props_templates_get_or_crt()
+        template_index = len(templates)
+        template = templates.add()
+        template.name = f"Template {template_index + 1}"
+        template.save_datas_update(None)
+        return {'FINISHED'}

@@ -13,21 +13,20 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-""" core structures and functions not depending on the Blender API """
+import bpy
 
-import re
+from ..exts import bpyx
+from ..prefs import config
+from .BaseOperator import BaseOperator
 
-from .build import build_version_str
-from .build import file_name_get
-from .build import version_increment
-from .FileSaveData import FileSaveData
-from .parse import parse_stem
-from .StemParts import StemParts
-from .VersionParts import VersionParts
-from .Template import Template
-from .Version import Version
-from .VersionTemplate import VersionTemplate
-
-def tokenize_words_and_numbers(stem: str) -> tuple[str, ...]:
-    return tuple(int(e) if e.isdigit() else e
-        for e in re.split(r"(\d+)", stem))
+@bpyx.addon_setup.registree
+class HelpOperator(BaseOperator):
+    bl_idname = f"{config.addon_key}.help"
+    bl_label = "Help"
+    url = config.addon_readme_url
+    bl_description = f"Open README file in the browser. Add-on's version: {config.addon_version}"
+    ui_icon = 'HELP'
+    ui_text = ""
+    def execute(self, context):
+        bpy.ops.wm.url_open(url = self.url)
+        return {'FINISHED'}

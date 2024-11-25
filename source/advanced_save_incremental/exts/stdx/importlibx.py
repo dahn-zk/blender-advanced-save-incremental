@@ -13,21 +13,23 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-""" core structures and functions not depending on the Blender API """
+import importlib
+import logging
+import sys
+from types import ModuleType
+from typing import Iterable
 
-import re
+logger = logging.getLogger(__name__)
 
-from .build import build_version_str
-from .build import file_name_get
-from .build import version_increment
-from .FileSaveData import FileSaveData
-from .parse import parse_stem
-from .StemParts import StemParts
-from .VersionParts import VersionParts
-from .Template import Template
-from .Version import Version
-from .VersionTemplate import VersionTemplate
-
-def tokenize_words_and_numbers(stem: str) -> tuple[str, ...]:
-    return tuple(int(e) if e.isdigit() else e
-        for e in re.split(r"(\d+)", stem))
+def reload(root_module_name: str, excluded: Iterable[ModuleType] = None):
+    """
+    reload a module and its submodules.
+    """
+    for module_name, module in list(sys.modules.items()):
+        if (
+                module_name.startswith(root_module_name)  # submodule or root
+                and len(module_name) > len(root_module_name)  # not root
+                and (excluded is None or module not in excluded)
+        ):
+            importlib.reload(module)
+            logger.debug(f"reloaded {module_name}")

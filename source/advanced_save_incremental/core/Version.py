@@ -16,9 +16,10 @@
 from dataclasses import dataclass
 from dataclasses import field
 
+from .VersionParts import VersionParts
 from .VersionTemplate import VersionTemplate
 
 @dataclass
 class Version:
-    parts: list[int] = field(default_factory = list)
+    parts: VersionParts = field(default_factory = list)
     template: VersionTemplate = field(default_factory = VersionTemplate)

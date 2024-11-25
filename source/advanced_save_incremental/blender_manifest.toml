@@ -17,18 +17,14 @@
 schema_version = "1.0.0"
 
 id = "advanced_save_incremental"
-version = "1.1.0"
+version = "2.0.0"
 name = "Advanced Save Incremental"
 tagline = "Save Incremental, but with persistent configurable templates"
 maintainer = "Danylo Dubinin"
 type = "add-on"
-website = "https://github.com/dahn-zk/blender-advanced-save-incremental"
+website = "https://github.com/dahn-zk/blender-advanced-save-incremental/"
 tags = ["Pipeline"]
 blender_version_min = "4.2.0"
 license = ["SPDX:GPL-3.0-or-later"]
 [permissions]
 files = "Save/Open blend-files and find other versioned blend-files"
-[build]
-paths_exclude_pattern = [
-    "__pycache__/",
-]

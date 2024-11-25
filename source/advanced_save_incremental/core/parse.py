@@ -28,11 +28,13 @@ def parse_prefix(root: str, template: Template):
     root = root.removeprefix(template.prefix)
     prefix = template.prefix if len(root) < root_len_old else ""
     return root, prefix
+
 def parse_suffix(root: str, template: Template):
     root_len_old = len(root)
     root = root.removesuffix(template.suffix)
     suffix = template.suffix if len(root) < root_len_old else ""
     return root, suffix
+
 def parse_version(stem: str, version_template: VersionTemplate):
     if version_template.width <= 0:
         version_part_pattern = r"(\d+)"
@@ -55,30 +57,11 @@ def parse_version(stem: str, version_template: VersionTemplate):
         version_parts = [int(e) for e in version_parts_strs if e.isnumeric()]
         root = stem.removesuffix("".join(version_groups))
     else:
-        version_parts = list(VersionTemplate.config.default)
+        version_parts = [0]
         root = stem
     return root, Version(version_parts, version_template)
-def parse(stem: str, template: Template) -> StemParts:
-    """
-    given a file name stem extract root and version data
 
-    for example, given the stem "forest_2-v1.12", prefix "pre_", suffix "-v",
-    separator ".", width 1 and count 2, the result would be: ::
-
-        StemParts(
-            prefix = "",
-            root = "forest_2",
-            suffix = "-v",
-            version = Version([1, 12]),
-            template = VersionTemplate(
-                prefix = "pre_",
-                suffix = "-v",
-                separator = ".",
-                width = 1,
-                count = 2,
-            )
-        )
-    """
+def parse_stem(stem: str, template: Template) -> StemParts:
     root, version = parse_version(stem, template.version)
     root, prefix = parse_prefix(root, template)
     root, suffix = parse_suffix(root, template)

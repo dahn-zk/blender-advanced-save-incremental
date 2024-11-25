@@ -13,21 +13,20 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-""" core structures and functions not depending on the Blender API """
+"""
+miscellaneous reusable Blender code not depending on a specific addon
+"""
 
-import re
+from pathlib import Path
+from typing import TypeVar
 
-from .build import build_version_str
-from .build import file_name_get
-from .build import version_increment
-from .FileSaveData import FileSaveData
-from .parse import parse_stem
-from .StemParts import StemParts
-from .VersionParts import VersionParts
-from .Template import Template
-from .Version import Version
-from .VersionTemplate import VersionTemplate
+import bpy
 
-def tokenize_words_and_numbers(stem: str) -> tuple[str, ...]:
-    return tuple(int(e) if e.isdigit() else e
-        for e in re.split(r"(\d+)", stem))
+bl_path_str = TypeVar("bl_path_str", bound = str)
+""" to denote Blender-style strings denoting paths """
+
+def path_abs_get(path: bl_path_str) -> Path:
+    return Path(bpy.path.abspath(path))
+
+def file_path_get() -> Path:
+    return path_abs_get(bpy.data.filepath)
