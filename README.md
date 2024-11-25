@@ -32,7 +32,7 @@ _Root_ parameter and _Version_ value will be auto-detected:
 - _Root_ = "Project Foobar"
 - _Version_ = "3.0.1"
 
-![Screenshot of the Current File parameters](screenshots/readme_screenshot_current_file.png)
+![Screenshot of the Current File parameters](images/readme_screenshot_current_file.png)
 
 [stem]: https://en.wikipedia.org/wiki/Filename#Filename_extensions
 
@@ -54,6 +54,6 @@ _Save Template_ - is a set of settings for how to save the new file:
 
 as a bonus, you can also see and open the _Directory_ files directly from the panel
 
-![Screenshot of the Save Template parameters](screenshots/readme_screenshot_template.png)
+![Screenshot of the Save Template parameters](images/readme_screenshot_template.png)
 
 [File Paths]: https://docs.blender.org/manual/en/latest/editors/preferences/file_paths.html

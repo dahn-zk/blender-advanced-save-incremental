@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   height="1600"
+   viewBox="0 0 1600 1600"
+   width="1600"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="icon.svg"
+   inkscape:version="1.4 (86a8ad7, 2024-10-11)"
+   inkscape:export-filename="icon-256x256.png"
+   inkscape:export-xdpi="15.36"
+   inkscape:export-ydpi="15.36"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1">
+    <rect
+       x="257.17791"
+       y="820.6135"
+       width="1069.9387"
+       height="482.94479"
+       id="rect1" />
+  </defs>
+  <sodipodi:namedview
+     pagecolor="#303030"
+     showgrid="true"
+     id="namedview1"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="0.36018252"
+     inkscape:cx="907.87305"
+     inkscape:cy="873.16842"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg1">
+    <inkscape:grid
+       id="grid5"
+       units="px"
+       spacingx="100"
+       spacingy="100"
+       color="#4772b3"
+       opacity="0.2"
+       visible="true"
+       originx="0"
+       originy="0" />
+  </sodipodi:namedview>
+  <g
+     fill="#fff"
+     id="g1">
+    <path
+       d="m30.26575 431.92903c-.27613.00003-.49997.22387-.5.5v13c.00003.27613.22387.49997.5.5h13c.27613-.00003.49997-.22387.5-.5v-9.99219c-.00003-.1326-.0527-.25975-.14648-.35351l-3-3.00782c-.0938-.0938-.22092-.14646-.35352-.14648zm.5 1h2v4.5c.00003.27613.22387.49997.5.5h6c.27613-.00003.49997-.22387.5-.5v-4.5h.29297l2.70703 2.71484v9.28516h-12zm6 0h2v4h-2z"
+       fill-rule="evenodd"
+       transform="matrix(100 0 0 100 -2876.575 -43092.903)"
+       id="path1" />
+  </g>
+  <text
+     xml:space="preserve"
+     id="text1"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:83.9755px;font-family:Inter;-inkscape-font-specification:Inter;text-align:start;writing-mode:lr-tb;direction:ltr;white-space:pre;shape-inside:url(#rect1);display:inline;fill:#ffffff"
+     transform="matrix(6.7872838,0,0,8.0589843,-1497.275,-5955.7961)"><tspan
+       x="257.17773"
+       y="898.34484"
+       id="tspan1">1.2.3</tspan></text>
+</svg>
